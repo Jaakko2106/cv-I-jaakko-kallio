@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum Vitae</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden; /* Prevent horizontal scroll due to off-canvas */
+            background-color: #f1f0f6; /* Light gray background for the page body */
+        }
+        /* Custom styles for the off-canvas menu transition */
+        .off-canvas-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            background-color: rgba(49, 46, 129, 0.7); /* Equivalent to indigo-800 with 85% opacity */
+            backdrop-filter: blur(8px); /* Add a blur effect */
+        }
+        .off-canvas-menu.open {
+            transform: translateX(0);
+        }
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .overlay.open {
+            visibility: visible;
+            opacity: 1;
+        }
+        /* Smooth scroll for anchor links */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Apply animations to elements that will be observed */
+        .animate-on-scroll {
+            opacity: 0;
+            transition: opacity 0.6s cubic-bezier(0.645, 0.045, 0.355, 1), transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+        .fade-in-up {
+            transform: translateY(30px);
+        }
+        .fade-in-left {
+            transform: translateX(-30px);
+        }
+        .fade-in-right {
+            transform: translateX(30px);
+        }
+        .zoom-in {
+             transform: scale(0.9);
+        }
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0) translateX(0) scale(1);
+        }
+
+        /* Modal styles */
+        .modal {
+            position: fixed; /* Stay in place */
+            z-index: 100; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+        }
+        .modal.open {
+             opacity: 1;
+             visibility: visible;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            transform: scale(0.95);
+            opacity: 0;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        .modal.open .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #aaa;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: #000;
+        }
+       
+        .carousel-slide {
+            display: none;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .carousel-slide.active {
+            display: block;
+        }
+        .topography {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        /* Animated Background */
+        .animated-bg-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.25;
+        }
+        .blob1 {
+            width: 400px;
+            height: 400px;
+            background-color: #a5b4fc; /* indigo-300 */
+            top: -150px;
+            left: -150px;
+            animation: moveBlob1 15s infinite alternate;
+        }
+        .blob2 {
+            width: 300px;
+            height: 300px;
+            background-color: #d8b4fe; /* purple-300 */
+            bottom: -100px;
+            right: -100px;
+            animation: moveBlob2 18s infinite alternate;
+        }
+        .blob3 {
+            width: 250px;
+            height: 250px;
+            background-color: #f9a8d4; /* pink-300 */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: moveBlob3 20s infinite alternate;
+        }
+
+        @keyframes moveBlob1 {
+            from { transform: translate(0, 0) scale(1); }
+            to { transform: translate(100px, 50px) scale(1.2); }
+        }
+        @keyframes moveBlob2 {
+            from { transform: translate(0, 0) scale(1); }
+            to { transform: translate(-80px, -60px) scale(0.8); }
+        }
+         @keyframes moveBlob3 {
+            from { transform: rotate(0deg) scale(1); }
+            to { transform: rotate(180deg) scale(1.1); }
+        }
+
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <div id="root"></div>
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://aistudiocdn.com/react@^19.2.0",
+        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+        "react/": "https://aistudiocdn.com/react@^19.2.0/"
+      }
+    }
+    </script>
+    <script type="module" src="/index.tsx"></script>
+</body>
+</html>
