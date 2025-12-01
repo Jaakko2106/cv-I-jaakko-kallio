@@ -18,9 +18,18 @@ const projectsData: Project[] = [
         title: "Brand Identity Design",
         description: "A complete brand overhaul for a tech startup, including logo, color palette, and typography. This project focused on creating a modern and trustworthy brand presence.",
         images: [
-            'https://upload.wikimedia.org/wikipedia/commons/0/09/Helsinki_logo.svg',
-            'https://placehold.co/600x400/C3C3FF/3F51B5?text=Logo+Exploration',
-            'https://placehold.co/600x400/AEAEFF/3F51B5?text=Final+Styleguide'
+            {
+                url: 'https://upload.wikimedia.org/wikipedia/commons/0/09/Helsinki_logo.svg',
+                caption: 'Final Logo Design'
+            },
+            {
+                url: 'https://placehold.co/600x400/C3C3FF/3F51B5?text=Logo+Exploration',
+                caption: 'Initial Concept Exploration'
+            },
+            {
+                url: 'https://placehold.co/600x400/AEAEFF/3F51B5?text=Final+Styleguide',
+                caption: 'Comprehensive Brand Guidelines'
+            }
         ],
         coverImage: 'https://upload.wikimedia.org/wikipedia/commons/0/09/Helsinki_logo.svg'
     },
@@ -29,9 +38,18 @@ const projectsData: Project[] = [
         title: "Responsive Web Design",
         description: "Designed and prototyped a responsive website for an e-commerce platform, focusing on user experience and conversion optimization.",
         images: [
-            'https://placehold.co/600x400/B8B8FF/3F51B5?text=Homepage+Desktop',
-            'https://placehold.co/600x400/C3C3FF/3F51B5?text=Product+Page',
-            'https://placehold.co/600x400/AEAEFF/3F51B5?text=Mobile+View'
+            {
+                url: 'https://placehold.co/600x400/B8B8FF/3F51B5?text=Homepage+Desktop',
+                caption: 'Desktop Homepage Layout'
+            },
+            {
+                url: 'https://placehold.co/600x400/C3C3FF/3F51B5?text=Product+Page',
+                caption: 'Product Detail View'
+            },
+            {
+                url: 'https://placehold.co/600x400/AEAEFF/3F51B5?text=Mobile+View',
+                caption: 'Mobile Responsive Adapations'
+            }
         ],
         coverImage: 'https://placehold.co/600x400/B8B8FF/3F51B5?text=Web+Design+Project'
     },
@@ -40,9 +58,18 @@ const projectsData: Project[] = [
         title: "Digital Illustration Series",
         description: "A series of digital illustrations for a children's book, bringing characters to life with vibrant colors and engaging characters.",
         images: [
-            'https://placehold.co/600x400/B8B8FF/3F51B5?text=Character+Sketch',
-            'https://placehold.co/600x400/C3C3FF/3F51B5?text=Scene+Illustration',
-            'https://placehold.co/600x400/AEAEFF/3F51B5?text=Book+Cover+Art'
+            {
+                url: 'https://placehold.co/600x400/B8B8FF/3F51B5?text=Character+Sketch',
+                caption: 'Initial Character Sketches'
+            },
+            {
+                url: 'https://placehold.co/600x400/C3C3FF/3F51B5?text=Scene+Illustration',
+                caption: 'Full Scene Rendering'
+            },
+            {
+                url: 'https://placehold.co/600x400/AEAEFF/3F51B5?text=Book+Cover+Art',
+                caption: 'Final Book Cover Art'
+            }
         ],
         coverImage: 'https://placehold.co/600x400/B8B8FF/3F51B5?text=Illustration+Project'
     }
