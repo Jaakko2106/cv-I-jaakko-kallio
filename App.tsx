@@ -31,7 +31,10 @@ const projectsData: Project[] = [
                 caption: 'Comprehensive Brand Guidelines'
             }
         ],
-        coverImage: 'https://upload.wikimedia.org/wikipedia/commons/0/09/Helsinki_logo.svg'
+        coverImage: 'https://upload.wikimedia.org/wikipedia/commons/0/09/Helsinki_logo.svg',
+        client: "Nordic Tech Solutions",
+        projectType: "Branding & Identity",
+        tools: ["Illustrator", "Photoshop", "InDesign"]
     },
     {
         id: '2',
@@ -51,7 +54,10 @@ const projectsData: Project[] = [
                 caption: 'Mobile Responsive Adapations'
             }
         ],
-        coverImage: 'https://placehold.co/600x400/B8B8FF/3F51B5?text=Web+Design+Project'
+        coverImage: 'https://placehold.co/600x400/B8B8FF/3F51B5?text=Web+Design+Project',
+        client: "Bloom E-Commerce",
+        projectType: "UI/UX Design",
+        tools: ["Figma", "React", "Tailwind CSS"]
     },
     {
         id: '3',
@@ -71,7 +77,10 @@ const projectsData: Project[] = [
                 caption: 'Final Book Cover Art'
             }
         ],
-        coverImage: 'https://placehold.co/600x400/B8B8FF/3F51B5?text=Illustration+Project'
+        coverImage: 'https://placehold.co/600x400/B8B8FF/3F51B5?text=Illustration+Project',
+        client: "Little Dreamers Publishing",
+        projectType: "Illustration",
+        tools: ["Procreate", "Photoshop", "After Effects"]
     }
 ];
 

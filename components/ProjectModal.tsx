@@ -66,6 +66,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ isOpen, onClose, project })
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
     const [isFullscreen, setIsFullscreen] = useState(false);
+    const [showCopyFeedback, setShowCopyFeedback] = useState(false);
 
     useEffect(() => {
         // When the modal is set to open, we delay setting it to visible
@@ -75,6 +76,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ isOpen, onClose, project })
                 setIsVisible(true);
                 setCurrentSlideIndex(0); // Reset slide on open
                 setIsFullscreen(false);
+                setShowCopyFeedback(false);
             }, 10);
             return () => clearTimeout(timer);
         } else {
@@ -133,25 +135,61 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ isOpen, onClose, project })
         setIsFullscreen(false);
     };
 
+    const handleShare = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            setShowCopyFeedback(true);
+            setTimeout(() => setShowCopyFeedback(false), 2000);
+        }).catch(err => {
+            console.error('Failed to copy URL:', err);
+        });
+    };
+
     const currentImage = project.images[currentSlideIndex];
 
     return (
         <div id="project-details-modal" className={`modal ${isVisible ? 'open' : ''}`} onClick={handleBackdropClick}>
-            <div className="modal-content">
+            <div className="modal-content overflow-y-auto max-h-[90vh]">
                 <span className="close-button" onClick={onClose}>&times;</span>
-                <h3 id="project-details-title" className="text-2xl font-bold text-indigo-700 mb-4">{project.title}</h3>
+                
+                {/* Header with Title and Share */}
+                <div className="flex items-center gap-2 mb-4 pr-8">
+                    <h3 id="project-details-title" className="text-2xl font-bold text-indigo-700">{project.title}</h3>
+                    <button 
+                        onClick={handleShare}
+                        className="p-2 rounded-full hover:bg-indigo-50 text-indigo-400 hover:text-indigo-600 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-100 group relative"
+                        title="Share project"
+                        aria-label="Share project"
+                    >
+                         {showCopyFeedback ? (
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        )}
+                    </button>
+                    {showCopyFeedback && (
+                        <span className="text-sm font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded animate-pulse">Copied!</span>
+                    )}
+                </div>
                 
                 <div id="project-carousel" className="relative w-full group/carousel">
                     <div id="carousel-wrapper" className="relative h-56 overflow-hidden rounded-lg md:h-80 bg-gray-50">
-                        {project.images.map((image, index) => (
-                            <div key={index} className={`carousel-slide ${index === currentSlideIndex ? 'active' : ''} h-full w-full relative`}>
-                                <CarouselImage 
-                                    src={image.url} 
-                                    alt={`${project.title} slide ${index + 1}`} 
-                                    onClick={toggleFullscreen}
-                                />
-                            </div>
-                        ))}
+                        {project.images.map((image, index) => {
+                            // Construct descriptive alt text
+                            const altText = image.caption 
+                                ? `${project.title} - ${image.caption}` 
+                                : `${project.title} - Image ${index + 1}`;
+                            
+                            return (
+                                <div key={index} className={`carousel-slide ${index === currentSlideIndex ? 'active' : ''} h-full w-full relative`}>
+                                    <CarouselImage 
+                                        src={image.url} 
+                                        alt={altText} 
+                                        onClick={toggleFullscreen}
+                                    />
+                                </div>
+                            );
+                        })}
                     </div>
                     
                     <button type="button" id="carousel-prev" onClick={prevSlide} className="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">
@@ -186,6 +224,34 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ isOpen, onClose, project })
                 </div>
 
                 <p id="project-details-description" className="text-gray-700 leading-relaxed mt-2">{project.description}</p>
+                
+                {/* Project Details */}
+                <div className="mt-8 pt-6 border-t border-gray-100 grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    {project.client && (
+                        <div className="flex flex-col">
+                            <span className="text-xs font-bold text-indigo-500 uppercase tracking-wider mb-1">Client Name</span>
+                            <span className="text-sm font-semibold text-gray-800">{project.client}</span>
+                        </div>
+                    )}
+                    {project.projectType && (
+                        <div className="flex flex-col">
+                            <span className="text-xs font-bold text-indigo-500 uppercase tracking-wider mb-1">Project Type</span>
+                            <span className="text-sm font-semibold text-gray-800">{project.projectType}</span>
+                        </div>
+                    )}
+                    {project.tools && project.tools.length > 0 && (
+                        <div className="flex flex-col">
+                            <span className="text-xs font-bold text-indigo-500 uppercase tracking-wider mb-2">Tools Used</span>
+                            <div className="flex flex-wrap gap-1.5">
+                                {project.tools.map(tool => (
+                                    <span key={tool} className="text-xs font-medium bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-md border border-indigo-100">
+                                        {tool}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
 
             {/* Fullscreen Image Overlay */}
@@ -220,7 +286,9 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ isOpen, onClose, project })
 
                     <FullscreenImage 
                         src={currentImage.url} 
-                        alt={`Fullscreen view of ${project.title}`}
+                        alt={currentImage.caption 
+                            ? `${project.title} - ${currentImage.caption}` 
+                            : `${project.title} - Image ${currentSlideIndex + 1}`}
                     />
 
                     <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center w-full px-8 pointer-events-none">

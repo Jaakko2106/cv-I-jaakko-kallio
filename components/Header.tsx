@@ -8,13 +8,13 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
     return (
         <header className="bg-white/80 backdrop-blur-md shadow-sm p-4 flex justify-between items-center fixed w-full top-0 left-0 z-50">
             <div className="flex items-center">
-                <svg width="40" height="40" viewBox="0 0 100 100" className="mr-3">
+                <svg width="40" height="40" viewBox="0 0 100 100" className="mr-3 flex-shrink-0">
                     <rect width="100" height="100" rx="20" fill="#4f46e5"/>
                     <text x="50" y="65" fontFamily="Inter, sans-serif" fontSize="50" fill="white" textAnchor="middle" fontWeight="bold">J</text>
                 </svg>
-                <span className="text-xl font-bold text-indigo-700 hidden sm:inline">Jaakko | CV</span>
+                <span className="text-lg sm:text-xl font-bold text-indigo-700 whitespace-nowrap">Jaakko | CV</span>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 sm:gap-4">
                  <a 
                     href="/Jaakko_Kallio_CV.pdf" 
                     download 

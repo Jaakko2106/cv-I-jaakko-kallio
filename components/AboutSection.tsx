@@ -17,20 +17,30 @@ const skills: Skill[] = [
 ];
 
 const SkillBar: React.FC<{ skill: Skill; delay?: string }> = ({ skill, delay = '0s' }) => (
-    <div className="w-full mb-4 animate-on-scroll fade-in-up" style={{ transitionDelay: delay }}>
+    <div 
+        className="w-full mb-4 animate-on-scroll fade-in-up group/skill" 
+        style={{ transitionDelay: delay, '--target-width': `${skill.level}%` } as React.CSSProperties}
+    >
         <div className="flex justify-between mb-1">
             <span className="text-base font-medium text-gray-700">{skill.name}</span>
             <span className="text-sm font-medium text-indigo-600">{skill.level}%</span>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-2.5">
+        <div className="w-full bg-gray-200 rounded-full h-2.5 relative group/tooltip cursor-pointer">
             <div 
-                className="bg-indigo-600 h-2.5 rounded-full transition-all duration-1000 ease-out" 
-                style={{ width: `${skill.level}%` }}
+                className="bg-indigo-600 h-2.5 rounded-full transition-all duration-1000 ease-out w-0 group-[.is-visible]/skill:w-[var(--target-width)]" 
                 aria-valuenow={skill.level}
                 aria-valuemin={0}
                 aria-valuemax={100}
                 role="progressbar"
             ></div>
+
+            {/* Tooltip */}
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
+                <div className="bg-gray-800 text-white text-xs rounded py-1 px-2 relative shadow-lg whitespace-nowrap">
+                    {skill.name}: {skill.level}%
+                    <div className="absolute w-2 h-2 bg-gray-800 rotate-45 left-1/2 -translate-x-1/2 -bottom-1"></div>
+                </div>
+            </div>
         </div>
     </div>
 );

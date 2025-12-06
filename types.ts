@@ -10,4 +10,7 @@ export interface Project {
     description: string;
     images: ProjectImage[];
     coverImage: string;
+    client?: string;
+    projectType?: string;
+    tools?: string[];
 }
