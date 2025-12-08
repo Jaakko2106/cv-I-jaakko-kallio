@@ -20,13 +20,13 @@ const HomeSection: React.FC = () => {
             <div className="absolute inset-0 bg-black/30 z-0"></div>
 
             <div className="relative z-10 max-w-4xl mx-auto text-white">
-                <h1 className="text-5xl md:text-7xl font-bold mb-4 animate-on-scroll fade-in-up drop-shadow-lg">Hi, I'm Jaakko</h1>
-                <p className="text-xl md:text-2xl mb-8 animate-on-scroll fade-in-up drop-shadow-md" style={{ transitionDelay: '0.2s' }}>An All-Around Graphic Designer</p>
+                <h1 className="text-5xl md:text-7xl font-bold mb-4 animate-on-scroll fade-in-up drop-shadow-lg">Hei, olen Jaakko</h1>
+                <p className="text-xl md:text-2xl mb-8 animate-on-scroll fade-in-up drop-shadow-md" style={{ transitionDelay: '0.2s' }}>Monipuolinen graafinen suunnittelija</p>
                 <div className="w-48 h-48 md:w-64 md:h-64 mx-auto bg-white rounded-full flex items-center justify-center overflow-hidden shadow-2xl border-4 border-indigo-200 animate-on-scroll zoom-in" style={{ transitionDelay: '0.4s' }}>
                     <img src="https://lh3.googleusercontent.com/a/ACg8ocIErQDc91ck-z8LvnzwofgI158k8P3kfkldTtQ0pTqMygEIhMMZTA=s539-c-no" alt="Photo of Jaakko" className="w-full h-full object-cover" />
                 </div>
                 <p className="mt-8 text-lg max-w-2xl mx-auto animate-on-scroll fade-in-up drop-shadow-md" style={{ transitionDelay: '0.6s' }}>
-                    Specializing in branding, UI/UX, and visual storytelling. I create designs that communicate effectively and leave a lasting impression.
+                    Erikoistunut brändäykseen, UI/UX-suunnitteluun ja visuaaliseen kerrontaan. Luon malleja, jotka viestivät tehokkaasti ja jättävät pysyvän vaikutuksen.
                 </p>
             </div>
         </section>

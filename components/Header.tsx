@@ -21,7 +21,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
                     className="bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out text-sm shadow-md inline-flex items-center gap-2 p-2 sm:py-2 sm:px-4"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-                    <span className="hidden sm:inline">Download CV</span>
+                    <span className="hidden sm:inline">Lataa CV</span>
                 </a>
                 <button id="menu-toggle" onClick={onMenuToggle} className="p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     <svg className="w-6 h-6 text-indigo-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

@@ -14,16 +14,16 @@ const EducationSection: React.FC = () => {
         <section id="education" className="py-20 px-8 relative overflow-hidden bg-white">
             <AnimatedBackground />
             <div className="relative z-10 container mx-auto max-w-4xl">
-                <h2 className="text-3xl font-bold text-center mb-12 text-indigo-700 animate-on-scroll fade-in">Education</h2>
+                <h2 className="text-3xl font-bold text-center mb-12 text-indigo-700 animate-on-scroll fade-in">Koulutus</h2>
                 <div className="grid md:grid-cols-2 gap-8">
                     <EducationItem 
-                        degree="Master of Arts in Graphic Design"
-                        university="University of Art and Design"
+                        degree="Taiteen maisteri, Graafinen suunnittelu"
+                        university="Taideteollinen korkeakoulu"
                         period="2013 - 2015"
                     />
                     <EducationItem 
-                        degree="Bachelor of Fine Arts in Visual Communication"
-                        university="State Design College"
+                        degree="Kuvataiteen kandidaatti, Visuaalinen viestintä"
+                        university="Valtion muotoiluopisto"
                         period="2010 - 2013"
                         delay="0.2s"
                     />

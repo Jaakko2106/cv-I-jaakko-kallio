@@ -21,26 +21,26 @@ const ExperienceSection: React.FC = () => {
         <section id="experience" className="py-20 px-8 relative overflow-hidden bg-gray-50">
             <AnimatedBackground />
             <div className="relative z-10 container mx-auto max-w-4xl">
-                <h2 className="text-3xl font-bold text-center mb-12 text-indigo-700 animate-on-scroll fade-in">Work Experience</h2>
+                <h2 className="text-3xl font-bold text-center mb-12 text-indigo-700 animate-on-scroll fade-in">Työkokemus</h2>
                 <div className="relative">
                     <ExperienceItem 
-                        title="Senior Graphic Designer"
+                        title="Vanhempi graafinen suunnittelija"
                         company="DesignHub Creative"
-                        period="2020 - Present"
-                        description="Led branding projects for major clients, mentored junior designers, and developed comprehensive visual identity systems. Specialized in UI/UX for web and mobile applications."
+                        period="2020 - Nykyhetki"
+                        description="Vedin brändäysprojekteja suurasiakkaille, mentoroin nuorempia suunnittelijoita ja kehitin kattavia visuaalisia identiteettijärjestelmiä. Erikoistunut UI/UX-suunnitteluun web- ja mobiilisovelluksille."
                     />
                     <ExperienceItem 
-                        title="Graphic Designer"
+                        title="Graafinen suunnittelija"
                         company="Innovate Solutions Inc."
                         period="2017 - 2020"
-                        description="Created marketing collateral, including brochures, social media graphics, and presentations. Collaborated with the marketing team to execute successful campaigns."
+                        description="Suunnittelin markkinointimateriaaleja, kuten esitteitä, sosiaalisen median grafiikkaa ja esityksiä. Tein yhteistyötä markkinointitiimin kanssa onnistuneiden kampanjoiden toteuttamiseksi."
                         delay="0.2s"
                     />
                     <ExperienceItem 
-                        title="Junior Designer"
+                        title="Nuorempi suunnittelija"
                         company="PixelPerfect Agency"
                         period="2015 - 2017"
-                        description="Assisted senior designers with various tasks, including image editing, layout design, and preparing files for print. Gained foundational experience in a fast-paced agency environment."
+                        description="Avustin vanhempia suunnittelijoita erilaisissa tehtävissä, kuten kuvankäsittelyssä, taitossa ja painoaineistojen valmistelussa. Sain perustavanlaatuista kokemusta nopeatempoisessa toimistoympäristössä."
                         delay="0.4s"
                     />
                 </div>

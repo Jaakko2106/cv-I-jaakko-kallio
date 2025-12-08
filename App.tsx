@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import OffCanvasMenu from './components/OffCanvasMenu';
@@ -15,72 +14,75 @@ import { Project } from './types';
 const projectsData: Project[] = [
     {
         id: '1',
-        title: "Brand Identity Design",
-        description: "A complete brand overhaul for a tech startup, including logo, color palette, and typography. This project focused on creating a modern and trustworthy brand presence.",
+        title: "Brändi-identiteetin suunnittelu",
+        description: "Täydellinen brändiuudistus teknologia-startupille, mukaan lukien logo, väripaletti ja typografia. Tämä projekti keskittyi modernin ja luotettavan brändi-ilmeen luomiseen.",
         images: [
             {
                 url: 'https://upload.wikimedia.org/wikipedia/commons/0/09/Helsinki_logo.svg',
-                caption: 'Final Logo Design'
+                caption: 'Lopullinen logosuunnitelma'
             },
             {
                 url: 'https://placehold.co/600x400/C3C3FF/3F51B5?text=Logo+Exploration',
-                caption: 'Initial Concept Exploration'
+                caption: 'Alustava konseptikartoitus'
             },
             {
                 url: 'https://placehold.co/600x400/AEAEFF/3F51B5?text=Final+Styleguide',
-                caption: 'Comprehensive Brand Guidelines'
+                caption: 'Kattava brändiohjeisto'
             }
         ],
         coverImage: 'https://upload.wikimedia.org/wikipedia/commons/0/09/Helsinki_logo.svg',
         client: "Nordic Tech Solutions",
-        projectType: "Branding & Identity",
-        tools: ["Illustrator", "Photoshop", "InDesign"]
+        projectType: "Brändäys & Identiteetti",
+        tools: ["Illustrator", "Photoshop", "InDesign"],
+        demoUrl: "https://example.com/case-study/nordic-tech"
     },
     {
         id: '2',
-        title: "Responsive Web Design",
-        description: "Designed and prototyped a responsive website for an e-commerce platform, focusing on user experience and conversion optimization.",
+        title: "Responsiivinen verkkosuunnittelu",
+        description: "Suunnittelin ja prototyypitin responsiivisen verkkosivuston verkkokauppa-alustalle, keskittyen käyttäjäkokemukseen ja konversio-optimointiin.",
         images: [
             {
                 url: 'https://placehold.co/600x400/B8B8FF/3F51B5?text=Homepage+Desktop',
-                caption: 'Desktop Homepage Layout'
+                caption: 'Työpöytäversion etusivu'
             },
             {
                 url: 'https://placehold.co/600x400/C3C3FF/3F51B5?text=Product+Page',
-                caption: 'Product Detail View'
+                caption: 'Tuotesivun näkymä'
             },
             {
                 url: 'https://placehold.co/600x400/AEAEFF/3F51B5?text=Mobile+View',
-                caption: 'Mobile Responsive Adapations'
+                caption: 'Mobiiliresponsiiviset mukautukset'
             }
         ],
         coverImage: 'https://placehold.co/600x400/B8B8FF/3F51B5?text=Web+Design+Project',
         client: "Bloom E-Commerce",
-        projectType: "UI/UX Design",
-        tools: ["Figma", "React", "Tailwind CSS"]
+        projectType: "UI/UX-suunnittelu",
+        tools: ["Figma", "React", "Tailwind CSS"],
+        demoUrl: "https://example.com/demo/bloom-ecommerce"
     },
     {
         id: '3',
-        title: "Digital Illustration Series",
-        description: "A series of digital illustrations for a children's book, bringing characters to life with vibrant colors and engaging characters.",
+        title: "Digitaalinen kuvitussarja",
+        description: "Sarja digitaalisia kuvituksia lastenkirjaan, hahmojen herättäminen eloon eloisilla väreillä ja kiinnostavilla persoonilla.",
         images: [
             {
                 url: 'https://placehold.co/600x400/B8B8FF/3F51B5?text=Character+Sketch',
-                caption: 'Initial Character Sketches'
+                caption: 'Alustavat hahmoluonnokset'
             },
             {
                 url: 'https://placehold.co/600x400/C3C3FF/3F51B5?text=Scene+Illustration',
-                caption: 'Full Scene Rendering'
+                caption: 'Koko kohtauksen renderöinti'
             },
             {
                 url: 'https://placehold.co/600x400/AEAEFF/3F51B5?text=Book+Cover+Art',
-                caption: 'Final Book Cover Art'
+                caption: 'Lopullinen kirjan kansikuva'
             }
         ],
         coverImage: 'https://placehold.co/600x400/B8B8FF/3F51B5?text=Illustration+Project',
         client: "Little Dreamers Publishing",
-        projectType: "Illustration",
-        tools: ["Procreate", "Photoshop", "After Effects"]
+        projectType: "Kuvitus",
+        tools: ["Procreate", "Photoshop", "After Effects"],
+        demoUrl: "https://example.com/portfolio/illustration-series"
     }
 ];
 

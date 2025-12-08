@@ -12,7 +12,7 @@ const WorksSection: React.FC<WorksSectionProps> = ({ projects, onProjectClick })
         <section id="works" className="py-20 px-8 relative overflow-hidden bg-gray-50">
             <AnimatedBackground />
             <div className="relative z-10 container mx-auto max-w-6xl">
-                <h2 className="text-3xl font-bold text-center mb-12 text-indigo-700 animate-on-scroll fade-in">My Works</h2>
+                <h2 className="text-3xl font-bold text-center mb-12 text-indigo-700 animate-on-scroll fade-in">Työnäytteet</h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {projects.map((project, index) => (
                         <div 

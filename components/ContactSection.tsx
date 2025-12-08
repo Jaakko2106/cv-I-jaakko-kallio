@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import AnimatedBackground from './AnimatedBackground';
 
@@ -33,9 +32,9 @@ const ContactSection: React.FC = () => {
         <section id="contact" className="py-20 px-8 relative overflow-hidden bg-white">
             <AnimatedBackground />
             <div className="relative z-10 container mx-auto max-w-2xl">
-                <h2 className="text-3xl font-bold text-center mb-4 text-indigo-700 animate-on-scroll fade-in">Get In Touch</h2>
+                <h2 className="text-3xl font-bold text-center mb-4 text-indigo-700 animate-on-scroll fade-in">Ota yhteyttä</h2>
                 <p className="text-lg text-gray-600 mb-10 text-center animate-on-scroll fade-in" style={{ transitionDelay: '0.2s' }}>
-                    I'm currently available for freelance work. If you have a project in mind or just want to say hello, fill out the form below!
+                    Olen tällä hetkellä käytettävissä freelance-töihin. Jos sinulla on projekti mielessä tai haluat vain sanoa hei, täytä alla oleva lomake!
                 </p>
                 
                 <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-xl border border-indigo-50 animate-on-scroll zoom-in" style={{ transitionDelay: '0.3s' }}>
@@ -46,19 +45,19 @@ const ContactSection: React.FC = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
-                            <h3 className="text-2xl font-bold text-gray-800 mb-2">Message Sent!</h3>
-                            <p className="text-gray-600">Thanks for reaching out. I'll get back to you as soon as possible.</p>
+                            <h3 className="text-2xl font-bold text-gray-800 mb-2">Viesti lähetetty!</h3>
+                            <p className="text-gray-600">Kiitos yhteydenotostasi. Palaan asiaan mahdollisimman pian.</p>
                             <button 
                                 onClick={() => setStatus('idle')}
                                 className="mt-6 text-indigo-600 font-semibold hover:text-indigo-800 transition-colors"
                             >
-                                Send another message
+                                Lähetä uusi viesti
                             </button>
                         </div>
                     ) : (
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div>
-                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Nimi</label>
                                 <input
                                     type="text"
                                     id="name"
@@ -67,11 +66,11 @@ const ContactSection: React.FC = () => {
                                     value={formData.name}
                                     onChange={handleChange}
                                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none bg-white/50"
-                                    placeholder="Your Name"
+                                    placeholder="Nimesi"
                                 />
                             </div>
                             <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Sähköposti</label>
                                 <input
                                     type="email"
                                     id="email"
@@ -80,11 +79,11 @@ const ContactSection: React.FC = () => {
                                     value={formData.email}
                                     onChange={handleChange}
                                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none bg-white/50"
-                                    placeholder="your@email.com"
+                                    placeholder="sinun@sähköposti.com"
                                 />
                             </div>
                             <div>
-                                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Viesti</label>
                                 <textarea
                                     id="message"
                                     name="message"
@@ -93,7 +92,7 @@ const ContactSection: React.FC = () => {
                                     value={formData.message}
                                     onChange={handleChange}
                                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none bg-white/50 resize-none"
-                                    placeholder="How can I help you?"
+                                    placeholder="Miten voin auttaa?"
                                 ></textarea>
                             </div>
                             <button
@@ -107,10 +106,10 @@ const ContactSection: React.FC = () => {
                                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                         </svg>
-                                        Sending...
+                                        Lähetetään...
                                     </>
                                 ) : (
-                                    'Send Message'
+                                    'Lähetä viesti'
                                 )}
                             </button>
                         </form>

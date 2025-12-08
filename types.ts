@@ -13,4 +13,5 @@ export interface Project {
     client?: string;
     projectType?: string;
     tools?: string[];
+    demoUrl?: string;
 }

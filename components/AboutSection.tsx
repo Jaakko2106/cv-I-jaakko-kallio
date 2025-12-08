@@ -1,4 +1,3 @@
-
 import React from 'react';
 import AnimatedBackground from './AnimatedBackground';
 
@@ -11,8 +10,8 @@ const skills: Skill[] = [
     { name: "Adobe Photoshop", level: 95 },
     { name: "Adobe Illustrator", level: 90 },
     { name: "Adobe InDesign", level: 85 },
-    { name: "Figma / Sketch", level: 90 },
-    { name: "After Effects", level: 75 },
+    { name: "Figma / Wireframing", level: 90 },
+    { name: "Wordpress", level: 80 },
     { name: "Premiere Pro", level: 70 },
 ];
 
@@ -50,7 +49,7 @@ const AboutSection: React.FC = () => {
         <section id="about" className="py-20 px-8 relative overflow-hidden bg-white">
             <AnimatedBackground />
             <div className="relative z-10 container mx-auto max-w-4xl">
-                <h2 className="text-3xl font-bold text-center mb-12 text-indigo-700 animate-on-scroll fade-in">About Me</h2>
+                <h2 className="text-3xl font-bold text-center mb-12 text-indigo-700 animate-on-scroll fade-in">Tietoa minusta</h2>
                 
                 {/* Introduction */}
                 <div className="flex flex-col md:flex-row items-center gap-10 mb-16">
@@ -59,17 +58,17 @@ const AboutSection: React.FC = () => {
                     </div>
                     <div className="md:w-2/3 text-lg text-gray-700 space-y-4 animate-on-scroll fade-in-right">
                         <p>
-                            Hello! I'm Jaakko, a passionate and versatile graphic designer with a keen eye for detail and a love for creating compelling visual narratives. With a strong foundation in design principles and a flair for modern aesthetics, I help brands connect with their audiences through meaningful and memorable designs.
+                            Hei! Olen Jaakko, intohimoinen ja monipuolinen graafinen suunnittelija, jolla on tarkka silmä yksityiskohdille ja rakkaus vakuuttavien visuaalisten tarinoiden luomiseen. Vahvalla suunnitteluperiaatteiden tuntemuksella ja modernilla esteettisellä silmällä autan brändejä yhdistymään yleisöönsä merkityksellisten ja mieleenpainuvien mallien avulla.
                         </p>
                         <p>
-                            My expertise spans across brand identity, UI/UX design, digital illustration, and print media. I thrive on challenges and am always eager to learn new skills and explore innovative design solutions. Let's create something amazing together!
+                            Osaamiseni kattaa brändi-identiteetin, UI/UX-suunnittelun, digitaalisen kuvituksen ja printtimedian. Innostun haasteista ja olen aina valmis oppimaan uusia taitoja sekä tutkimaan innovatiivisia suunnitteluratkaisuja. Luodaan yhdessä jotain upeaa!
                         </p>
                     </div>
                 </div>
 
                 {/* Software Skills */}
                 <div className="mt-12">
-                    <h3 className="text-2xl font-bold text-center mb-8 text-indigo-700 animate-on-scroll fade-in">Software Proficiency</h3>
+                    <h3 className="text-2xl font-bold text-center mb-8 text-indigo-700 animate-on-scroll fade-in">Ohjelmisto-osaaminen</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-2">
                         {skills.map((skill, index) => (
                             <SkillBar 
