@@ -54,7 +54,7 @@ const AboutSection: React.FC = () => {
                 {/* Introduction */}
                 <div className="flex flex-col md:flex-row items-center gap-10 mb-16">
                     <div className="md:w-1/3 animate-on-scroll fade-in-left">
-                        <img src="https://lh3.googleusercontent.com/a/ACg8ocIErQDc91ck-z8LvnzwofgI158k8P3kfkldTtQ0pTqMygEIhMMZTA=s539-c-no" alt="Jaakko Kallio" className="rounded-full shadow-lg w-48 h-48 md:w-64 md:h-64 object-cover mx-auto" />
+                        <img src="omakuva.svg" alt="Jaakko Kallio" className="rounded-full shadow-lg w-48 h-48 md:w-64 md:h-64 object-cover mx-auto" />
                     </div>
                     <div className="md:w-2/3 text-lg text-gray-700 space-y-4 animate-on-scroll fade-in-right">
                         <p>
