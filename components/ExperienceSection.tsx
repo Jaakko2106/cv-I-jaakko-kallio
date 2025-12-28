@@ -4,12 +4,12 @@ import AnimatedBackground from './AnimatedBackground';
 const ExperienceItem: React.FC<{ title: string; company: string; period: string; description: string; delay?: string }> = ({ title, company, period, description, delay = '0s' }) => (
     <div className="relative pl-8 sm:pl-12 py-6 group animate-on-scroll fade-in-up" style={{ transitionDelay: delay }}>
         <div className="flex items-center mb-1">
-            <div className="absolute left-0 h-full w-px bg-indigo-200"></div>
-            <div className="absolute left-[-8px] w-4 h-4 rounded-full bg-indigo-500 border-2 border-white group-hover:bg-indigo-700 transition-colors"></div>
-            <h3 className="text-xl font-bold text-gray-800">{title}</h3>
+            <div className="absolute left-0 h-full w-px bg-indigo-500/50"></div>
+            <div className="absolute left-[-8px] w-4 h-4 rounded-full bg-indigo-500 border-2 border-indigo-200 group-hover:bg-indigo-400 group-hover:scale-125 transition-all shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div>
+            <h3 className="text-xl font-bold text-white group-hover:text-indigo-200 transition-colors">{title}</h3>
         </div>
-        <p className="text-indigo-600 font-semibold">{company} | {period}</p>
-        <p className="mt-2 text-gray-600">
+        <p className="text-indigo-300 font-semibold tracking-wide text-sm mb-2">{company} | {period}</p>
+        <p className="text-indigo-100/80 leading-relaxed">
             {description}
         </p>
     </div>
@@ -18,11 +18,11 @@ const ExperienceItem: React.FC<{ title: string; company: string; period: string;
 
 const ExperienceSection: React.FC = () => {
     return (
-        <section id="experience" className="py-20 px-8 relative overflow-hidden bg-gray-50">
+        <section id="experience" className="py-20 px-8 relative overflow-hidden">
             <AnimatedBackground />
             <div className="relative z-10 container mx-auto max-w-4xl">
-                <h2 className="text-3xl font-bold text-center mb-12 text-indigo-700 animate-on-scroll fade-in">Työkokemus</h2>
-                <div className="relative">
+                <h2 className="text-3xl font-bold text-center mb-12 text-white animate-on-scroll fade-in drop-shadow-md">Työkokemus</h2>
+                <div className="relative bg-black/20 backdrop-blur-sm p-8 rounded-3xl border border-white/10">
                     <ExperienceItem 
                         title="Vanhempi graafinen suunnittelija"
                         company="DesignHub Creative"

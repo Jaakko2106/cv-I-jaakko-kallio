@@ -29,27 +29,27 @@ const ContactSection: React.FC = () => {
     };
 
     return (
-        <section id="contact" className="py-20 px-8 relative overflow-hidden bg-white">
+        <section id="contact" className="py-20 px-8 relative overflow-hidden">
             <AnimatedBackground />
             <div className="relative z-10 container mx-auto max-w-2xl">
-                <h2 className="text-3xl font-bold text-center mb-4 text-indigo-700 animate-on-scroll fade-in">Ota yhteyttä</h2>
-                <p className="text-lg text-gray-600 mb-10 text-center animate-on-scroll fade-in" style={{ transitionDelay: '0.2s' }}>
+                <h2 className="text-3xl font-bold text-center mb-4 text-white animate-on-scroll fade-in drop-shadow-md">Ota yhteyttä</h2>
+                <p className="text-lg text-indigo-100 mb-10 text-center animate-on-scroll fade-in" style={{ transitionDelay: '0.2s' }}>
                     Olen tällä hetkellä käytettävissä freelance-töihin. Jos sinulla on projekti mielessä tai haluat vain sanoa hei, täytä alla oleva lomake!
                 </p>
                 
-                <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-xl border border-indigo-50 animate-on-scroll zoom-in" style={{ transitionDelay: '0.3s' }}>
+                <div className="bg-white/10 backdrop-blur-lg p-8 rounded-3xl shadow-2xl border border-white/20 animate-on-scroll zoom-in" style={{ transitionDelay: '0.3s' }}>
                     {status === 'success' ? (
                         <div className="text-center py-12">
-                            <div className="w-16 h-16 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <div className="w-16 h-16 bg-green-500/20 text-green-400 rounded-full flex items-center justify-center mx-auto mb-4 border border-green-500/30">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
-                            <h3 className="text-2xl font-bold text-gray-800 mb-2">Viesti lähetetty!</h3>
-                            <p className="text-gray-600">Kiitos yhteydenotostasi. Palaan asiaan mahdollisimman pian.</p>
+                            <h3 className="text-2xl font-bold text-white mb-2">Viesti lähetetty!</h3>
+                            <p className="text-indigo-200">Kiitos yhteydenotostasi. Palaan asiaan mahdollisimman pian.</p>
                             <button 
                                 onClick={() => setStatus('idle')}
-                                className="mt-6 text-indigo-600 font-semibold hover:text-indigo-800 transition-colors"
+                                className="mt-6 text-indigo-300 font-semibold hover:text-white transition-colors underline decoration-2 underline-offset-4"
                             >
                                 Lähetä uusi viesti
                             </button>
@@ -57,7 +57,7 @@ const ContactSection: React.FC = () => {
                     ) : (
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div>
-                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Nimi</label>
+                                <label htmlFor="name" className="block text-sm font-medium text-indigo-200 mb-1 ml-1">Nimi</label>
                                 <input
                                     type="text"
                                     id="name"
@@ -65,12 +65,12 @@ const ContactSection: React.FC = () => {
                                     required
                                     value={formData.name}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none bg-white/50"
+                                    className="w-full px-4 py-3 rounded-xl border border-white/10 focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all outline-none bg-black/20 text-white placeholder-white/30"
                                     placeholder="Nimesi"
                                 />
                             </div>
                             <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Sähköposti</label>
+                                <label htmlFor="email" className="block text-sm font-medium text-indigo-200 mb-1 ml-1">Sähköposti</label>
                                 <input
                                     type="email"
                                     id="email"
@@ -78,12 +78,12 @@ const ContactSection: React.FC = () => {
                                     required
                                     value={formData.email}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none bg-white/50"
+                                    className="w-full px-4 py-3 rounded-xl border border-white/10 focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all outline-none bg-black/20 text-white placeholder-white/30"
                                     placeholder="sinun@sähköposti.com"
                                 />
                             </div>
                             <div>
-                                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Viesti</label>
+                                <label htmlFor="message" className="block text-sm font-medium text-indigo-200 mb-1 ml-1">Viesti</label>
                                 <textarea
                                     id="message"
                                     name="message"
@@ -91,14 +91,14 @@ const ContactSection: React.FC = () => {
                                     rows={4}
                                     value={formData.message}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none bg-white/50 resize-none"
+                                    className="w-full px-4 py-3 rounded-xl border border-white/10 focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all outline-none bg-black/20 text-white placeholder-white/30 resize-none"
                                     placeholder="Miten voin auttaa?"
                                 ></textarea>
                             </div>
                             <button
                                 type="submit"
                                 disabled={status === 'submitting'}
-                                className={`w-full bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out text-lg shadow-md flex justify-center items-center ${status === 'submitting' ? 'opacity-70 cursor-not-allowed' : ''}`}
+                                className={`w-full bg-indigo-600 text-white font-bold py-3.5 px-8 rounded-xl hover:bg-indigo-500 transition-all duration-300 ease-in-out text-lg shadow-lg hover:shadow-indigo-500/40 flex justify-center items-center ${status === 'submitting' ? 'opacity-70 cursor-not-allowed' : ''}`}
                             >
                                 {status === 'submitting' ? (
                                     <>

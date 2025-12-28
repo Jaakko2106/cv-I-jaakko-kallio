@@ -1,23 +1,10 @@
 import React from 'react';
+import AnimatedBackground from './AnimatedBackground';
 
 const HomeSection: React.FC = () => {
     return (
         <section id="home" className="relative min-h-screen w-full flex flex-col justify-center items-center text-center p-8 overflow-hidden">
-            {/* Video Background */}
-            <video 
-                autoPlay 
-                loop 
-                muted 
-                playsInline 
-                className="absolute top-0 left-0 w-full h-full object-cover z-0"
-            >
-                <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-blue-fluid-smoke-43093-large.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-            </video>
-
-            {/* Overlay for readability and color tinting */}
-            <div className="absolute inset-0 bg-indigo-900/60 mix-blend-multiply z-0"></div>
-            <div className="absolute inset-0 bg-black/30 z-0"></div>
+            <AnimatedBackground />
 
             <div className="relative z-10 max-w-4xl mx-auto text-white">
                 <h1 className="text-5xl md:text-7xl font-bold mb-4 animate-on-scroll fade-in-up drop-shadow-lg">Hei, olen Jaakko</h1>

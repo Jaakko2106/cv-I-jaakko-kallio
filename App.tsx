@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Header from './components/Header';
 import OffCanvasMenu from './components/OffCanvasMenu';
 import HomeSection from './components/HomeSection';
@@ -89,6 +89,7 @@ const projectsData: Project[] = [
 const App: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
@@ -103,7 +104,7 @@ const App: React.FC = () => {
         elements.forEach(el => observer.observe(el));
 
         return () => elements.forEach(el => observer.unobserve(el));
-    }, []);
+    }, [searchQuery]); // Re-observe when items might change due to search
 
     useEffect(() => {
         if (isMenuOpen || selectedProject) {
@@ -129,9 +130,20 @@ const App: React.FC = () => {
         setSelectedProject(null);
     };
 
+    const filteredProjects = useMemo(() => {
+        if (!searchQuery.trim()) return projectsData;
+        const q = searchQuery.toLowerCase();
+        return projectsData.filter(p => 
+            p.title.toLowerCase().includes(q) || 
+            p.description.toLowerCase().includes(q) ||
+            p.projectType?.toLowerCase().includes(q) ||
+            p.tools?.some(t => t.toLowerCase().includes(q))
+        );
+    }, [searchQuery]);
+
     return (
         <>
-            <Header onMenuToggle={handleMenuToggle} />
+            <Header onMenuToggle={handleMenuToggle} onSearch={setSearchQuery} />
             <OffCanvasMenu isOpen={isMenuOpen} onClose={handleMenuClose} />
             <div id="overlay" className={`overlay fixed inset-0 z-40 ${isMenuOpen ? 'open' : ''}`} onClick={handleMenuClose}></div>
 
@@ -140,7 +152,7 @@ const App: React.FC = () => {
                 <AboutSection />
                 <ExperienceSection />
                 <EducationSection />
-                <WorksSection projects={projectsData} onProjectClick={handleProjectClick} />
+                <WorksSection projects={filteredProjects} onProjectClick={handleProjectClick} />
                 <ContactSection />
             </main>
 
