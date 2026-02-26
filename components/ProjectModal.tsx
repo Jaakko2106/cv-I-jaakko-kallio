@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Project } from '../types';
+import { useContent } from './ContentContext';
 
 interface ProjectModalProps {
     isOpen: boolean;
@@ -12,12 +13,12 @@ const CarouselImage: React.FC<{ src: string; alt: string; onClick: () => void }>
 
     return (
         <div 
-            className="w-full h-full relative flex items-center justify-center bg-gray-50 rounded-lg overflow-hidden cursor-zoom-in group" 
+            className="w-full h-full relative flex items-center justify-center bg-base-surface rounded-lg overflow-hidden cursor-zoom-in group" 
             onClick={onClick}
         >
-            <div className={`absolute inset-0 flex items-center justify-center bg-gray-200 transition-opacity duration-500 z-10 ${isLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+            <div className={`absolute inset-0 flex items-center justify-center bg-base-surface transition-opacity duration-500 z-10 ${isLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
                 <div className="animate-pulse flex flex-col items-center">
-                    <svg className="w-12 h-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-12 h-12 text-base-text/20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                 </div>
@@ -124,8 +125,8 @@ const FullscreenImage: React.FC<{ src: string; alt: string }> = ({ src, alt }) =
             onWheel={handleWheel}
         >
              <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 z-10 pointer-events-none ${isLoaded ? 'opacity-0' : 'opacity-100'}`}>
-                <div className="w-full h-full max-w-4xl max-h-[80vh] bg-white/5 rounded-lg border border-white/10 animate-pulse flex items-center justify-center">
-                     <svg className="w-16 h-16 text-white/20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="w-full h-full max-w-4xl max-h-[80vh] bg-base-surface rounded-lg border border-base-border animate-pulse flex items-center justify-center">
+                     <svg className="w-16 h-16 text-base-text/10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                 </div>
@@ -175,6 +176,7 @@ const FullscreenImage: React.FC<{ src: string; alt: string }> = ({ src, alt }) =
 };
 
 const ProjectModal: React.FC<ProjectModalProps> = ({ isOpen, onClose, project }) => {
+    const { isEditMode, updateProjects, content } = useContent();
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
     const [isFullscreen, setIsFullscreen] = useState(false);
@@ -208,13 +210,40 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ isOpen, onClose, project })
 
     if (!isOpen) return null;
 
+    const handleProjectFieldChange = (field: string, value: any) => {
+        const newProjects = [...content.projects];
+        const pIndex = newProjects.findIndex(p => p.id === project.id);
+        newProjects[pIndex] = { ...newProjects[pIndex], [field]: value };
+        updateProjects(newProjects);
+    };
+
+    const handleImageChange = (index: number, field: string, value: string) => {
+        const newImages = [...project.images];
+        newImages[index] = { ...newImages[index], [field]: value };
+        handleProjectFieldChange('images', newImages);
+    };
+
+    const addImage = () => {
+        handleProjectFieldChange('images', [...project.images, { url: 'https://placehold.co/600x400', caption: 'Uusi kuva' }]);
+    };
+
+    const removeImage = (index: number) => {
+        const newImages = project.images.filter((_, i) => i !== index);
+        handleProjectFieldChange('images', newImages);
+        if (currentSlideIndex >= newImages.length) {
+            setCurrentSlideIndex(Math.max(0, newImages.length - 1));
+        }
+    };
+
     const nextSlide = (e?: React.MouseEvent) => {
         e?.stopPropagation();
+        if (project.images.length === 0) return;
         setCurrentSlideIndex((prevIndex) => (prevIndex + 1) % project.images.length);
     };
 
     const prevSlide = (e?: React.MouseEvent) => {
         e?.stopPropagation();
+        if (project.images.length === 0) return;
         setCurrentSlideIndex((prevIndex) => (prevIndex - 1 + project.images.length) % project.images.length);
     };
 
@@ -222,7 +251,11 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ isOpen, onClose, project })
         if (e.target === e.currentTarget) onClose();
     };
 
-    const toggleFullscreen = () => setIsFullscreen(!isFullscreen);
+    const toggleFullscreen = () => {
+        if (project.images.length === 0) return;
+        setIsFullscreen(!isFullscreen);
+    };
+
     const handleFullscreenClose = (e: React.MouseEvent) => {
         e.stopPropagation();
         setIsFullscreen(false);
@@ -240,18 +273,27 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ isOpen, onClose, project })
 
     return (
         <div id="project-details-modal" className={`modal ${isVisible ? 'open' : ''}`} onClick={handleBackdropClick}>
-            <div className="modal-content overflow-y-auto max-h-[90vh] !max-w-3xl !p-0">
+            <div className="modal-content overflow-y-auto max-h-[90vh] w-[95%] sm:w-[90%] !max-w-3xl !p-0 border border-base-border">
                 {/* Header Section */}
-                <div className="p-6 md:p-8 border-b border-gray-100 sticky top-0 bg-white/95 backdrop-blur-md z-30">
-                    <span className="close-button !top-6 !right-6" onClick={onClose}>&times;</span>
+                <div className="p-5 md:p-8 border-b border-base-border sticky top-0 bg-base/95 backdrop-blur-md z-30">
+                    <span className="close-button !top-4 !right-4 md:!top-6 md:!right-6 text-base-text/60 hover:text-base-text" onClick={onClose}>&times;</span>
                     
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pr-8">
-                        <div className="flex items-center gap-2">
-                            <h3 className="text-2xl md:text-3xl font-bold text-indigo-900 leading-tight">{project.title}</h3>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pr-8 md:pr-10">
+                        <div className="flex items-center gap-2 flex-grow">
+                            {isEditMode ? (
+                                <input 
+                                    type="text" 
+                                    value={project.title} 
+                                    onChange={(e) => handleProjectFieldChange('title', e.target.value)}
+                                    className="text-xl md:text-3xl font-bold text-base-text leading-tight bg-transparent border-b border-accent/20 focus:outline-none w-full"
+                                />
+                            ) : (
+                                <h3 className="text-xl md:text-3xl font-bold text-base-text leading-tight">{project.title}</h3>
+                            )}
                             <button 
                                 onClick={handleShare}
                                 title="Kopioi linkki"
-                                className="p-2 rounded-full hover:bg-indigo-50 text-indigo-400 hover:text-indigo-600 transition-all focus:outline-none flex-shrink-0"
+                                className="p-2 rounded-full hover:bg-accent/10 text-accent hover:text-accent-hover transition-all focus:outline-none flex-shrink-0"
                             >
                                 {showCopyFeedback ? (
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500"><polyline points="20 6 9 17 4 12"></polyline></svg>
@@ -261,111 +303,200 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ isOpen, onClose, project })
                             </button>
                         </div>
 
-                        {project.demoUrl && (
-                            <a 
-                                href={project.demoUrl} 
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white hover:bg-indigo-700 font-bold rounded-xl transition-all shadow-md hover:shadow-lg text-sm flex-shrink-0 group"
-                            >
-                                <span>Katso live</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                            </a>
+                        {isEditMode ? (
+                            <input 
+                                type="text" 
+                                value={project.demoUrl || ''} 
+                                onChange={(e) => handleProjectFieldChange('demoUrl', e.target.value)}
+                                placeholder="Demo URL"
+                                className="text-sm bg-transparent border-b border-accent/20 focus:outline-none text-accent"
+                            />
+                        ) : (
+                            project.demoUrl && (
+                                <a 
+                                    href={project.demoUrl} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-accent text-white hover:bg-accent-hover font-bold rounded-xl transition-all shadow-md hover:shadow-lg text-sm flex-shrink-0 group"
+                                >
+                                    <span>Katso live</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                </a>
+                            )
                         )}
                     </div>
                 </div>
 
-                <div className="p-6 md:p-8">
+                <div className="p-5 md:p-8 bg-base">
                     {/* Visuals Section */}
                     <div className="relative w-full group/carousel mb-8">
-                        <div className="relative h-64 md:h-[450px] bg-gray-50 rounded-2xl overflow-hidden shadow-inner border border-gray-100">
-                            {project.images.map((image, index) => (
-                                <div key={index} className={`carousel-slide ${index === currentSlideIndex ? 'active' : ''} h-full w-full relative`}>
-                                    <CarouselImage src={image.url} alt={image.caption || project.title} onClick={toggleFullscreen} />
+                        <div className="relative h-64 md:h-[450px] bg-base-surface rounded-2xl overflow-hidden shadow-inner border border-base-border">
+                            {project.images.length > 0 ? (
+                                project.images.map((image, index) => (
+                                    <div key={index} className={`carousel-slide ${index === currentSlideIndex ? 'active' : ''} h-full w-full relative`}>
+                                        <CarouselImage src={image.url} alt={image.caption || project.title} onClick={toggleFullscreen} />
+                                        {isEditMode && (
+                                            <div className="absolute top-4 left-4 right-4 z-40 bg-black/60 p-2 rounded-xl backdrop-blur-md flex flex-col gap-2 opacity-0 group-hover/carousel:opacity-100 transition-opacity">
+                                                <input 
+                                                    type="text" 
+                                                    value={image.url} 
+                                                    onChange={(e) => handleImageChange(index, 'url', e.target.value)}
+                                                    placeholder="Kuvan URL"
+                                                    className="bg-white/10 text-white text-xs p-2 rounded focus:outline-none"
+                                                />
+                                                <input 
+                                                    type="text" 
+                                                    value={image.caption || ''} 
+                                                    onChange={(e) => handleImageChange(index, 'caption', e.target.value)}
+                                                    placeholder="Kuvateksti"
+                                                    className="bg-white/10 text-white text-xs p-2 rounded focus:outline-none"
+                                                />
+                                                <button 
+                                                    onClick={() => removeImage(index)}
+                                                    className="bg-red-500 text-white text-[10px] py-1 rounded"
+                                                >
+                                                    Poista kuva
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="h-full w-full flex items-center justify-center text-base-text/20 italic">
+                                    Ei kuvia
                                 </div>
-                            ))}
+                            )}
                         </div>
-                        <button onClick={prevSlide} className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 shadow-xl flex items-center justify-center text-indigo-700 hover:bg-white transition-all scale-90 hover:scale-100 z-10">
-                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" /></svg>
-                        </button>
-                        <button onClick={nextSlide} className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 shadow-xl flex items-center justify-center text-indigo-700 hover:bg-white transition-all scale-90 hover:scale-100 z-10">
-                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" /></svg>
-                        </button>
+                        {project.images.length > 1 && (
+                            <>
+                                <button onClick={prevSlide} className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-base-surface shadow-xl flex items-center justify-center text-accent hover:bg-base-surface/80 transition-all scale-90 hover:scale-100 z-10 border border-base-border">
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" /></svg>
+                                </button>
+                                <button onClick={nextSlide} className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-base-surface shadow-xl flex items-center justify-center text-accent hover:bg-base-surface/80 transition-all scale-90 hover:scale-100 z-10 border border-base-border">
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" /></svg>
+                                </button>
+                            </>
+                        )}
                     </div>
 
-                    <div className="flex gap-3 mb-10 overflow-x-auto pb-4 scrollbar-hide">
+                    <div className="flex gap-3 mb-10 overflow-x-auto pb-4 scrollbar-hide items-center">
                         {project.images.map((img, index) => (
-                            <button key={index} onClick={() => setCurrentSlideIndex(index)} className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${index === currentSlideIndex ? 'border-indigo-600 ring-4 ring-indigo-50 scale-105' : 'border-transparent opacity-60 hover:opacity-100'}`}>
+                            <button key={index} onClick={() => setCurrentSlideIndex(index)} className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${index === currentSlideIndex ? 'border-accent ring-4 ring-accent/10 scale-105' : 'border-transparent opacity-60 hover:opacity-100'}`}>
                                 <img src={img.url} alt="" className="w-full h-full object-cover" />
                             </button>
                         ))}
+                        {isEditMode && (
+                            <button 
+                                onClick={addImage}
+                                className="flex-shrink-0 w-20 h-20 rounded-xl border-2 border-dashed border-accent/30 flex items-center justify-center text-accent hover:bg-accent/10 transition-all"
+                            >
+                                +
+                            </button>
+                        )}
                     </div>
 
                     {/* Content Section */}
                     <div className="prose prose-indigo max-w-none mb-12">
-                        <h4 className="text-indigo-900 text-xl font-bold mb-4 flex items-center gap-2">
-                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-indigo-500"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        <h4 className="text-base-text text-xl font-bold mb-4 flex items-center gap-2">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-accent"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                              Projektin kuvaus
                         </h4>
-                        <p className="text-gray-700 text-lg leading-relaxed">{project.description}</p>
+                        {isEditMode ? (
+                            <textarea 
+                                value={project.description} 
+                                onChange={(e) => handleProjectFieldChange('description', e.target.value)}
+                                className="w-full bg-transparent border border-accent/20 rounded p-4 focus:outline-none text-base-text mb-12 text-lg leading-relaxed"
+                                rows={6}
+                            />
+                        ) : (
+                            <p className="text-base-text mb-12 text-lg leading-relaxed">{project.description}</p>
+                        )}
                     </div>
                     
                     {/* Key Details Grid Section */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
                         {/* Client Card */}
-                        <div className="bg-indigo-50/50 border border-indigo-100/50 p-5 rounded-2xl hover:bg-indigo-50 transition-colors group">
+                        <div className="bg-accent/5 border border-accent/10 p-5 rounded-2xl hover:bg-accent/10 transition-colors group">
                             <div className="flex items-center gap-3 mb-3">
-                                <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-200">
+                                <div className="w-8 h-8 rounded-lg bg-accent text-white flex items-center justify-center shadow-lg shadow-accent/20">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                                 </div>
-                                <span className="text-xs font-bold text-indigo-400 uppercase tracking-widest">Asiakas</span>
+                                <span className="text-xs font-bold text-accent/60 uppercase tracking-widest">Asiakas</span>
                             </div>
-                            <p className="text-gray-900 font-bold text-base truncate">{project.client || 'Yksityinen'}</p>
+                            {isEditMode ? (
+                                <input 
+                                    type="text" 
+                                    value={project.client || ''} 
+                                    onChange={(e) => handleProjectFieldChange('client', e.target.value)}
+                                    className="text-base-text font-bold text-base bg-transparent border-b border-accent/20 focus:outline-none w-full"
+                                />
+                            ) : (
+                                <p className="text-base-text font-bold text-base truncate">{project.client || 'Yksityinen'}</p>
+                            )}
                         </div>
 
                         {/* Project Type Card */}
-                        <div className="bg-indigo-50/50 border border-indigo-100/50 p-5 rounded-2xl hover:bg-indigo-50 transition-colors group">
+                        <div className="bg-accent/5 border border-accent/10 p-5 rounded-2xl hover:bg-accent/10 transition-colors group">
                             <div className="flex items-center gap-3 mb-3">
-                                <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-200">
+                                <div className="w-8 h-8 rounded-lg bg-accent text-white flex items-center justify-center shadow-lg shadow-accent/20">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
                                 </div>
-                                <span className="text-xs font-bold text-indigo-400 uppercase tracking-widest">Tyyppi</span>
+                                <span className="text-xs font-bold text-accent/60 uppercase tracking-widest">Tyyppi</span>
                             </div>
-                            <p className="text-gray-900 font-bold text-base truncate">{project.projectType || 'Suunnittelu'}</p>
+                            {isEditMode ? (
+                                <input 
+                                    type="text" 
+                                    value={project.projectType || ''} 
+                                    onChange={(e) => handleProjectFieldChange('projectType', e.target.value)}
+                                    className="text-base-text font-bold text-base bg-transparent border-b border-accent/20 focus:outline-none w-full"
+                                />
+                            ) : (
+                                <p className="text-base-text font-bold text-base truncate">{project.projectType || 'Suunnittelu'}</p>
+                            )}
                         </div>
 
                         {/* Tools Card */}
-                        <div className="bg-indigo-50/50 border border-indigo-100/50 p-5 rounded-2xl hover:bg-indigo-50 transition-colors group md:col-span-1">
+                        <div className="bg-accent/5 border border-accent/10 p-5 rounded-2xl hover:bg-accent/10 transition-colors group md:col-span-1">
                             <div className="flex items-center gap-3 mb-3">
-                                <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-200">
+                                <div className="w-8 h-8 rounded-lg bg-accent text-white flex items-center justify-center shadow-lg shadow-accent/20">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                                 </div>
-                                <span className="text-xs font-bold text-indigo-400 uppercase tracking-widest">Työkalut</span>
+                                <span className="text-xs font-bold text-accent/60 uppercase tracking-widest">Työkalut</span>
                             </div>
-                            <div className="flex flex-wrap gap-1.5">
-                                {project.tools && project.tools.length > 0 ? (
-                                    project.tools.slice(0, 3).map(tool => (
-                                        <span key={tool} className="px-2 py-0.5 bg-white text-indigo-700 rounded-md text-[10px] font-bold border border-indigo-100 shadow-sm">
-                                            {tool}
-                                        </span>
-                                    ))
-                                ) : (
-                                    <span className="text-gray-400 text-sm">Ei määritelty</span>
-                                )}
-                                {project.tools && project.tools.length > 3 && (
-                                    <span className="text-[10px] font-bold text-indigo-400 flex items-center">+{project.tools.length - 3}</span>
-                                )}
-                            </div>
+                            {isEditMode ? (
+                                <input 
+                                    type="text" 
+                                    value={project.tools?.join(', ') || ''} 
+                                    onChange={(e) => handleProjectFieldChange('tools', e.target.value.split(',').map(t => t.trim()))}
+                                    placeholder="Erota pilkulla"
+                                    className="text-base-text font-bold text-base bg-transparent border-b border-accent/20 focus:outline-none w-full"
+                                />
+                            ) : (
+                                <div className="flex flex-wrap gap-1.5">
+                                    {project.tools && project.tools.length > 0 ? (
+                                        project.tools.slice(0, 3).map(tool => (
+                                            <span key={tool} className="px-2 py-0.5 bg-base-surface text-accent rounded-md text-[10px] font-bold border border-accent/20 shadow-sm">
+                                                {tool}
+                                            </span>
+                                        ))
+                                    ) : (
+                                        <span className="text-base-text/40 text-sm">Ei määritelty</span>
+                                    )}
+                                    {project.tools && project.tools.length > 3 && (
+                                        <span className="text-[10px] font-bold text-accent flex items-center">+{project.tools.length - 3}</span>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     </div>
 
-                    {project.demoUrl && (
-                        <div className="flex justify-center pt-4 border-t border-gray-100">
+                    {project.demoUrl && !isEditMode && (
+                        <div className="flex justify-center pt-4 border-t border-base-border">
                             <a
                                 href={project.demoUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="w-full flex items-center justify-center gap-3 px-8 py-5 bg-indigo-900 text-white font-bold rounded-2xl hover:bg-black transition-all shadow-2xl hover:-translate-y-1"
+                                className="w-full flex items-center justify-center gap-3 px-8 py-5 bg-accent text-white font-bold rounded-2xl hover:bg-accent-hover transition-all shadow-2xl hover:-translate-y-1"
                             >
                                 <span>Avaa täysi projektisivu</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
@@ -376,25 +507,29 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ isOpen, onClose, project })
             </div>
 
             {/* Fullscreen Viewer (Remains enhanced with zooming) */}
-            {isFullscreen && (
+            {isFullscreen && project.images.length > 0 && (
                 <div className="fixed inset-0 z-[200] bg-black/98 flex items-center justify-center p-4 backdrop-blur-xl" onClick={handleFullscreenClose}>
                     <button className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors z-[210] p-4" onClick={handleFullscreenClose}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     </button>
                     
-                    <button 
-                        className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20 hover:text-white transition-all hover:scale-110 z-[210] hidden md:block" 
-                        onClick={prevSlide}
-                    >
-                         <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    </button>
+                    {project.images.length > 1 && (
+                        <>
+                            <button 
+                                className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20 hover:text-white transition-all hover:scale-110 z-[210] hidden md:block" 
+                                onClick={prevSlide}
+                            >
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                            </button>
 
-                    <button 
-                        className="absolute right-6 top-1/2 -translate-y-1/2 text-white/20 hover:text-white transition-all hover:scale-110 z-[210] hidden md:block" 
-                        onClick={nextSlide}
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </button>
+                            <button 
+                                className="absolute right-6 top-1/2 -translate-y-1/2 text-white/20 hover:text-white transition-all hover:scale-110 z-[210] hidden md:block" 
+                                onClick={nextSlide}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </button>
+                        </>
+                    )}
 
                     <FullscreenImage src={currentImage.url} alt="" />
 

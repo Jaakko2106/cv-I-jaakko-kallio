@@ -1,8 +1,14 @@
 import React from 'react';
+import { Theme, AccentColor } from '../types';
+import ThemeSwitcher from './ThemeSwitcher';
 
 interface OffCanvasMenuProps {
     isOpen: boolean;
     onClose: () => void;
+    currentTheme: Theme;
+    currentAccent: AccentColor;
+    onThemeChange: (theme: Theme) => void;
+    onAccentChange: (accent: AccentColor) => void;
 }
 
 interface MenuItem {
@@ -11,7 +17,14 @@ interface MenuItem {
     icon: React.ReactNode;
 }
 
-const OffCanvasMenu: React.FC<OffCanvasMenuProps> = ({ isOpen, onClose }) => {
+const OffCanvasMenu: React.FC<OffCanvasMenuProps> = ({ 
+    isOpen, 
+    onClose,
+    currentTheme,
+    currentAccent,
+    onThemeChange,
+    onAccentChange
+}) => {
 
     const handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
         event.preventDefault();
@@ -59,19 +72,19 @@ const OffCanvasMenu: React.FC<OffCanvasMenuProps> = ({ isOpen, onClose }) => {
     ];
 
     return (
-        <div id="off-canvas-menu" className={`off-canvas-menu fixed top-0 left-0 h-full w-72 text-white shadow-2xl z-[100] flex flex-col ${isOpen ? 'open' : ''}`}>
+        <div id="off-canvas-menu" className={`off-canvas-menu fixed top-0 left-0 h-full w-72 text-base-text shadow-2xl z-[100] flex flex-col ${isOpen ? 'open' : ''}`}>
             {/* Sidebar Header with Logo and Close button */}
-            <div className="flex items-center justify-between p-6 border-b border-white/10 mb-6">
+            <div className="flex items-center justify-between p-6 border-b border-base-border mb-6">
                 <div className="flex items-center">
                     <svg width="32" height="32" viewBox="0 0 100 100" className="mr-3">
                         <rect width="100" height="100" rx="20" fill="white"/>
-                        <text x="50" y="65" fontFamily="Inter, sans-serif" fontSize="50" fill="#4f46e5" textAnchor="middle" fontWeight="bold">J</text>
+                        <text x="50" y="65" fontFamily="Inter, sans-serif" fontSize="50" fill="var(--accent-primary)" textAnchor="middle" fontWeight="bold">J</text>
                     </svg>
                     <span className="font-bold text-lg tracking-tight">Valikko</span>
                 </div>
                 <button 
                     onClick={onClose} 
-                    className="p-2 rounded-xl hover:bg-white/10 transition-colors focus:outline-none"
+                    className="p-2 rounded-xl hover:bg-base-surface transition-colors focus:outline-none"
                     aria-label="Sulje valikko"
                 >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -87,7 +100,7 @@ const OffCanvasMenu: React.FC<OffCanvasMenuProps> = ({ isOpen, onClose }) => {
                         key={item.href}
                         href={item.href} 
                         onClick={handleLinkClick} 
-                        className="flex items-center px-4 py-3 rounded-xl text-indigo-50 hover:bg-white/10 hover:text-white transition-all duration-200 font-medium group"
+                        className="flex items-center px-4 py-3 rounded-xl text-base-text/80 hover:bg-accent/10 hover:text-accent transition-all duration-200 font-medium group"
                     >
                         <span className="group-hover:scale-110 transition-transform duration-200">
                             {item.icon}
@@ -96,12 +109,24 @@ const OffCanvasMenu: React.FC<OffCanvasMenuProps> = ({ isOpen, onClose }) => {
                     </a>
                 ))}
 
+                {/* Theme and Accent Switcher */}
+                <div className="pt-6 px-2">
+                    <ThemeSwitcher 
+                        currentTheme={currentTheme}
+                        currentAccent={currentAccent}
+                        onThemeChange={onThemeChange}
+                        onAccentChange={onAccentChange}
+                    />
+                </div>
+
                 {/* Mobile Download CV Action */}
                 <div className="pt-4 px-2">
                     <a 
                         href="/Jaakko_Kallio_CV.pdf" 
                         download 
-                        className="flex items-center justify-center gap-3 w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-lg shadow-indigo-900/20 active:scale-95"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-3 w-full bg-accent hover:bg-accent-hover text-white font-bold py-3 px-4 rounded-xl transition-all shadow-lg shadow-accent/20 active:scale-95"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
                         Lataa CV
@@ -110,19 +135,19 @@ const OffCanvasMenu: React.FC<OffCanvasMenuProps> = ({ isOpen, onClose }) => {
             </nav>
 
             {/* Bottom: User Info */}
-            <div className="mt-auto p-6 bg-white/5 border-t border-white/10">
+            <div className="mt-auto p-6 bg-base-surface border-t border-base-border">
                 <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center font-bold text-white border border-white/20 overflow-hidden">
+                    <div className="w-10 h-10 rounded-full bg-base-text/10 flex items-center justify-center font-bold text-base-text border border-base-border overflow-hidden">
                         <img src="https://lh3.googleusercontent.com/a/ACg8ocIErQDc91ck-z8LvnzwofgI158k8P3kfkldTtQ0pTqMygEIhMMZTA=s539-c-no" alt="Jaakko" className="w-full h-full object-cover" />
                     </div>
                     <div>
-                        <p className="font-bold text-white leading-tight">Jaakko Kallio</p>
-                        <p className="text-xs text-indigo-200 font-medium">Graafinen suunnittelija</p>
+                        <p className="font-bold text-base-text leading-tight">Jaakko Kallio</p>
+                        <p className="text-xs text-accent font-medium">Graafinen suunnittelija</p>
                     </div>
                 </div>
                 <a 
                     href="mailto:jaakko.kkallio@gmail.com" 
-                    className="text-sm text-indigo-300 hover:text-white transition-colors flex items-center gap-2 mt-3 truncate"
+                    className="text-sm text-accent hover:text-accent-hover transition-colors flex items-center gap-2 mt-3 truncate"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9.5C2 7 4 5 6.5 5H18c2.5 0 4.5 2 4.5 4.5z"/><path d="m22 10-8.53 4.26a2 2 0 0 1-1.94 0L3 10"/></svg>
                     jaakko.kkallio@gmail.com

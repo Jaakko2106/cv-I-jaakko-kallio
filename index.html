@@ -5,18 +5,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jaakko | Ansioluettelo</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        accent: {
+                            DEFAULT: 'var(--accent-primary)',
+                            hover: 'var(--accent-hover)',
+                            shadow: 'var(--accent-shadow)',
+                        },
+                        base: {
+                            DEFAULT: 'var(--bg-base)',
+                            text: 'var(--text-base)',
+                            surface: 'var(--bg-surface)',
+                            border: 'var(--border-base)',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            /* Indigo */
+            --accent-indigo-primary: #4f46e5;
+            --accent-indigo-hover: #4338ca;
+            --accent-indigo-shadow: rgba(79, 70, 229, 0.2);
+
+            /* Emerald */
+            --accent-emerald-primary: #10b981;
+            --accent-emerald-hover: #059669;
+            --accent-emerald-shadow: rgba(16, 185, 129, 0.2);
+
+            /* Rose */
+            --accent-rose-primary: #f43f5e;
+            --accent-rose-hover: #e11d48;
+            --accent-rose-shadow: rgba(244, 63, 94, 0.2);
+
+            /* Amber */
+            --accent-amber-primary: #f59e0b;
+            --accent-amber-hover: #d97706;
+            --accent-amber-shadow: rgba(245, 158, 11, 0.2);
+
+            /* Cyan */
+            --accent-cyan-primary: #06b6d4;
+            --accent-cyan-hover: #0891b2;
+            --accent-cyan-shadow: rgba(6, 182, 212, 0.2);
+
+            /* Active Accent (Defaults to Indigo) */
+            --accent-primary: var(--accent-indigo-primary);
+            --accent-hover: var(--accent-indigo-hover);
+            --accent-shadow: var(--accent-indigo-shadow);
+
+            --bg-base: #1e1b4b; /* indigo-950 */
+            --text-base: #f3f4f6; /* gray-100 */
+            --bg-surface: rgba(255, 255, 255, 0.05);
+            --border-base: rgba(255, 255, 255, 0.1);
+
+            /* Animation Variables */
+            --anim-duration: 0.6s;
+            --anim-easing: cubic-bezier(0.645, 0.045, 0.355, 1);
+            --anim-distance: 30px;
+        }
+
+        [data-theme='light'] {
+            --bg-base: #f9fafb; /* gray-50 */
+            --text-base: #111827; /* gray-900 */
+            --bg-surface: rgba(0, 0, 0, 0.05);
+            --border-base: rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-theme-only { display: block; }
+        .light-theme-only { display: none; }
+
+        [data-theme='light'] .dark-theme-only { display: none; }
+        [data-theme='light'] .light-theme-only { display: block; }
+
         body {
             font-family: 'Inter', sans-serif;
             overflow-x: hidden; /* Prevent horizontal scroll due to off-canvas */
-            background-color: #1e1b4b; /* indigo-950 - match video overlay base */
+            background-color: var(--bg-base);
+            color: var(--text-base);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         /* Custom styles for the off-canvas menu transition */
         .off-canvas-menu {
             transform: translateX(-100%);
             transition: transform 0.3s ease-in-out;
-            background-color: rgba(30, 27, 75, 0.9); /* Dark indigo */
+            background-color: var(--bg-base);
             backdrop-filter: blur(12px);
         }
         .off-canvas-menu.open {
@@ -45,16 +128,22 @@
         /* Apply animations to elements that will be observed */
         .animate-on-scroll {
             opacity: 0;
-            transition: opacity 0.6s cubic-bezier(0.645, 0.045, 0.355, 1), transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
+            transition: opacity var(--anim-duration) var(--anim-easing), transform var(--anim-duration) var(--anim-easing);
+        }
+        .fade-in {
+            /* Just opacity, no transform */
         }
         .fade-in-up {
-            transform: translateY(30px);
+            transform: translateY(var(--anim-distance));
+        }
+        .fade-in-down {
+            transform: translateY(calc(-1 * var(--anim-distance)));
         }
         .fade-in-left {
-            transform: translateX(-30px);
+            transform: translateX(calc(-1 * var(--anim-distance)));
         }
         .fade-in-right {
-            transform: translateX(30px);
+            transform: translateX(var(--anim-distance));
         }
         .zoom-in {
              transform: scale(0.9);
@@ -126,6 +215,7 @@
         
         /* Animated Background Removed - replaced by Video */
     </style>
+<link rel="stylesheet" href="/index.css">
 </head>
 <body class="bg-indigo-950 text-gray-100">
     <div id="root"></div>
